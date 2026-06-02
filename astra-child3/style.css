@@ -9,8 +9,9 @@ Version: 1.0.0
 Text Domain: khoshtip-kocholo-child
 */
 
-/* Import Vazirmatn Font */
-@import url("https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap");
+/* Vazirmatn Font - Loaded via PHP based on admin settings */
+/* Default: Local font for faster loading on Iran servers */
+/* Can be switched to Google Fonts in plugin settings */
 
 /* CSS HSL Color Variables */
 :root {

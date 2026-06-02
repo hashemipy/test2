@@ -42,6 +42,9 @@ class Khoshtip_Admin_Settings {
         
         // General Settings
         register_setting('khoshtip_auth_settings', 'khoshtip_require_phone');
+        
+        // Font Settings (for Iran servers optimization)
+        register_setting('khoshtip_auth_settings', 'khoshtip_font_source');
     }
     
     /**
@@ -193,6 +196,34 @@ class Khoshtip_Admin_Settings {
                         </button>
                     </div>
                     
+                    <!-- Font Settings -->
+                    <div class="settings-section">
+                        <h2>تنظیمات فونت سایت</h2>
+                        <p class="description">برای سرعت بیشتر در سرورهای ایران، فونت لوکال پیشنهاد می‌شود.</p>
+                        
+                        <table class="form-table">
+                            <tr>
+                                <th scope="row">
+                                    <label for="khoshtip_font_source">منبع فونت Vazirmatn</label>
+                                </th>
+                                <td>
+                                    <select id="khoshtip_font_source" name="khoshtip_font_source">
+                                        <option value="local" <?php selected(get_option('khoshtip_font_source', 'local'), 'local'); ?>>
+                                            فونت لوکال (سریع‌تر برای سرورهای ایران)
+                                        </option>
+                                        <option value="google" <?php selected(get_option('khoshtip_font_source', 'local'), 'google'); ?>>
+                                            Google Fonts (برای سرورهای با اینترنت جهانی)
+                                        </option>
+                                    </select>
+                                    <p class="description">
+                                        <strong>فونت لوکال:</strong> فونت از داخل سرور شما لود می‌شود - سریع‌ترین گزینه برای سرورهای ایران<br>
+                                        <strong>Google Fonts:</strong> فونت از سرورهای گوگل لود می‌شود - فقط برای سرورهایی که به اینترنت جهانی دسترسی دارند
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    
                 </div>
                 
                 <?php submit_button('ذخیره تنظیمات'); ?>
@@ -282,7 +313,7 @@ class Khoshtip_Admin_Settings {
                         
                         <div class="help-step">
                             <h3>مرحله ۲: ورود به پنل کاربری</h3>
-                            <p>با نام کاربری و رمز عبور خود وارد پنل شوید.</p>
+                            <p>��ا نام کاربری و رمز عبور خود وارد پنل شوید.</p>
                         </div>
                         
                         <div class="help-step">

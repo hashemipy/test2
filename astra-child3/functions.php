@@ -69,6 +69,16 @@ function khoshtip_kocholo_enqueue_styles() {
     // Enqueue child theme style
     wp_enqueue_style('khoshtip-kocholo-child-style', get_stylesheet_directory_uri() . '/style.css', array('astra-parent-style'), '1.0.0');
     
+    // Load Vazirmatn font based on settings (default: local for Iran servers)
+    $font_source = get_option('khoshtip_font_source', 'local');
+    if ($font_source === 'google') {
+        // Load from Google Fonts (for servers with international access)
+        wp_enqueue_style('vazirmatn-google', 'https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap', array(), null);
+    } else {
+        // Load local font (default - faster for Iran servers)
+        wp_enqueue_style('vazirmatn-local', get_stylesheet_directory_uri() . '/assets/css/vazirmatn-local.css', array(), '1.0.0');
+    }
+    
     // Enqueue component styles
     wp_enqueue_style('khoshtip-kocholo-components', get_stylesheet_directory_uri() . '/assets/css/components.css', array('khoshtip-kocholo-child-style'), '1.0.0');
     
