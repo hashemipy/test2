@@ -750,7 +750,12 @@
       if (typeof Swiper === "undefined") return
 
       const swiperEl = $content.find(".swiper")[0]
-      if (!swiperEl || swiperEl.swiper) return
+      if (!swiperEl) return
+
+      // Destroy existing swiper if it exists
+      if (swiperEl.swiper) {
+        swiperEl.swiper.destroy()
+      }
 
       const accordionSwiper = new Swiper(swiperEl, {
         slidesPerView: 2,
