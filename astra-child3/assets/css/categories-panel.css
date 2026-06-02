@@ -1,0 +1,305 @@
+/* Categories Panel Styles */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* اضافه کردن انیمیشن ورود پنل */
+@keyframes slideInPanel {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.k-categories-panel {
+  font-family: inherit;
+  animation: slideInPanel 0.3s ease-out;
+}
+
+.k-category-item {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.k-category-item:hover {
+  background: rgba(255, 107, 157, 0.08) !important;
+  transform: translateX(-3px);
+}
+
+.k-category-item:hover > div:first-child {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* افکت کلیک روی دسته‌بندی */
+.k-category-item:active > div:first-child {
+  transform: scale(0.95);
+}
+
+.k-product-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.k-product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12) !important;
+}
+
+.k-product-card img {
+  transition: transform 0.3s ease;
+}
+
+.k-product-card:hover img {
+  transform: scale(1.08);
+}
+
+/* افکت کلیک روی کارت محصول */
+.k-product-card:active {
+  transform: translateY(-2px);
+}
+
+/* Scrollbar styling */
+.k-categories-sidebar::-webkit-scrollbar,
+.k-categories-products::-webkit-scrollbar,
+.k-category-products-grid::-webkit-scrollbar {
+  width: 6px;
+}
+
+.k-categories-sidebar::-webkit-scrollbar-track,
+.k-categories-products::-webkit-scrollbar-track,
+.k-category-products-grid::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.k-categories-sidebar::-webkit-scrollbar-thumb,
+.k-categories-products::-webkit-scrollbar-thumb,
+.k-category-products-grid::-webkit-scrollbar-thumb {
+  background: #ff6b9d;
+  border-radius: 3px;
+}
+
+.k-categories-sidebar::-webkit-scrollbar-thumb:hover,
+.k-categories-products::-webkit-scrollbar-thumb:hover,
+.k-category-products-grid::-webkit-scrollbar-thumb:hover {
+  background: #e5558a;
+}
+
+/* اضافه کردن scrollbar برای Firefox */
+.k-categories-sidebar,
+.k-categories-products,
+.k-category-products-grid {
+  scrollbar-width: thin;
+  scrollbar-color: #ff6b9d #f1f1f1;
+}
+
+/* Bottom bar hide animation */
+.k-bottom-bar-hidden {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+.k-bottom-bar,
+.k-bottom-bar-wave {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* افکت هاور برای دکمه‌های منوی پایین */
+.k-bottom-bar a:hover {
+  opacity: 0.7;
+}
+
+/* افکت هاور برای دکمه‌های بستن و جستجو */
+.k-categories-panel-close:hover,
+.k-categories-panel-search:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: scale(1.1);
+  transition: all 0.2s ease;
+}
+
+.k-categories-panel-close:active,
+.k-categories-panel-search:active {
+  transform: scale(0.95);
+}
+
+/* انیمیشن برای badge تعداد سبد خرید */
+@keyframes bounceIn {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.k-cart-count {
+  animation: bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* کاهش سایز آیکون‌های دسته‌بندی به 40 پیکسل */
+.k-category-item > div:first-child {
+  width: 40px !important;
+  height: 40px !important;
+}
+
+/* Grid layout for products - 2 columns mobile, 5 columns desktop */
+.k-category-products-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 12px !important;
+  padding: 15px !important;
+}
+
+/* استایل‌های جدید برای فیلتر سایز در پنل */
+.k-panel-size-filter {
+  transition: all 0.3s ease;
+}
+
+.k-size-checkbox-panel {
+  transition: all 0.2s ease;
+}
+
+.k-size-checkbox-panel:has(input:checked) {
+  background: linear-gradient(135deg, #ff6b9d, #ffc3d7) !important;
+  border-color: #ff6b9d !important;
+  color: #fff !important;
+  transform: scale(1.05);
+}
+
+.k-size-checkbox-panel:hover {
+  border-color: #ff6b9d;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* استایل برای دکمه فیلتر سایز */
+.k-panel-size-toggle {
+  transition: all 0.2s ease;
+}
+
+.k-panel-size-toggle:hover {
+  background: rgba(255, 255, 255, 0.3) !important;
+  transform: scale(1.05);
+}
+
+.k-panel-size-toggle:active {
+  transform: scale(0.95);
+}
+
+/* استایل برای ورودی جستجو در پنل */
+.k-panel-search-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.2);
+}
+
+/* تنظیمات ریسپانسیو برای موبایل */
+@media (max-width: 640px) {
+  .k-categories-sidebar {
+    width: 100px !important;
+  }
+
+  .k-category-item {
+    padding: 10px 6px !important;
+  }
+
+  .k-category-item > div:first-child {
+    width: 38px !important;
+    height: 38px !important;
+  }
+
+  .k-category-item > div:first-child span {
+    font-size: 18px !important;
+  }
+
+  .k-category-item > div:last-child {
+    font-size: 10px !important;
+  }
+
+  .k-category-products-grid {
+    gap: 10px !important;
+    padding: 12px !important;
+  }
+
+  .k-product-card h3 {
+    font-size: 12px !important;
+  }
+
+  .k-product-card > div:last-child {
+    padding: 8px !important;
+  }
+}
+
+/* Desktop styles - 5 columns and full height modal */
+@media (min-width: 641px) {
+  .k-category-products-grid {
+    grid-template-columns: repeat(5, 1fr) !important;
+    gap: 15px !important;
+    padding: 20px !important;
+  }
+
+  .k-categories-products {
+    overflow-y: auto !important;
+  }
+
+  /* Full height modal for categories panel */
+  .k-categories-panel {
+    height: 100vh !important;
+    min-height: 100vh !important;
+    max-height: 100vh !important;
+  }
+
+  /* Full height for search modal */
+  [data-search-modal] {
+    height: 100vh !important;
+    min-height: 100vh !important;
+  }
+
+  /* Make search modal content container full height and scrollable */
+  [data-search-modal] > div {
+    height: 100vh !important;
+    max-height: 100vh !important;
+    overflow-y: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .k-categories-products-inner {
+    min-height: 100% !important;
+  }
+}
+
+/* Added mobile styles to account for fixed bottom menu inside panel */
+@media (max-width: 640px) {
+  /* Panel content area should have padding-bottom for fixed footer menu */
+  .k-categories-products {
+    padding-bottom: 80px !important;
+  }
+
+  /* Ensure scrollable area respects the fixed footer */
+  .k-categories-panel > div:nth-child(3) {
+    padding-bottom: 80px !important;
+  }
+}
+
+/* Added styles for search results grid - same as category products */
+.k-size-search-results-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 12px !important;
+  padding: 15px 0 !important;
+}
+
+@media (min-width: 641px) {
+  .k-size-search-results-grid {
+    grid-template-columns: repeat(5, 1fr) !important;
+    gap: 15px !important;
+  }
+}
