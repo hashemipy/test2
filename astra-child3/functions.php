@@ -80,11 +80,11 @@ function khoshtip_kocholo_enqueue_styles() {
     
     wp_enqueue_style('khoshtip-product-video', get_stylesheet_directory_uri() . '/assets/css/product-video.css', array('khoshtip-kocholo-child-style'), '1.0.0');
     
-    // Enqueue Swiper CSS for carousels
-    wp_enqueue_style('swiper-css', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css', array(), '11.0.0');
+    // Enqueue Swiper CSS for carousels (local version for Iran servers)
+    wp_enqueue_style('swiper-css', get_stylesheet_directory_uri() . '/assets/css/swiper-bundle.min.css', array(), '11.0.0');
     
-    // Enqueue Swiper JS
-    wp_enqueue_script('swiper-js', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js', array(), '11.0.0', true);
+    // Enqueue Swiper JS (local version for Iran servers)
+    wp_enqueue_script('swiper-js', get_stylesheet_directory_uri() . '/assets/js/swiper-bundle.min.js', array(), '11.0.0', true);
     
     // Enqueue custom JavaScript
     wp_enqueue_script('khoshtip-kocholo-main', get_stylesheet_directory_uri() . '/assets/js/main.js', array('jquery', 'swiper-js'), '1.0.1', true);
