@@ -214,7 +214,7 @@ if (empty($categories)) {
                  <?php endif; ?>
                  style="text-decoration: none; display: block;">
                 <?php if (!empty($category['image'])) : ?>
-                    <img src="<?php echo esc_url($category['image']); ?>" alt="<?php echo esc_attr($category['name']); ?>" loading="lazy" class="category-bg-image" />
+                    <img src="<?php echo esc_url($category['image']); ?>" alt="<?php echo esc_attr($category['name']); ?>" class="category-bg-image" />
                 <?php else : ?>
                     <div class="category-bg-image" style="background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%); display: flex; align-items: center; justify-content: center; font-size: 3rem;">📦</div>
                 <?php endif; ?>
@@ -241,7 +241,6 @@ if (empty($categories)) {
                 ?>
                     <img src="<?php echo esc_url($modal_image); ?>" 
                          alt="<?php echo esc_attr($category['name']); ?>" 
-                         loading="lazy"
                          class="category-modal-image" />
                 <?php endif; ?>
                 

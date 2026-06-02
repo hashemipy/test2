@@ -115,7 +115,7 @@ function astra_product_video_meta_box_callback($post) {
                 </div>
             <?php else : ?>
                 <div class="thumbnail-preview" id="astra-thumbnail-preview" style="display: none;">
-                    <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/placeholder.svg" alt="Video Thumbnail">
+                    <img src="/placeholder.svg" alt="Video Thumbnail">
                     <br>
                     <span class="remove-video" onclick="astraRemoveThumbnail()">✕ حذف تصویر</span>
                 </div>
