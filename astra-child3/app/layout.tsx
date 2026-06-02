@@ -21,8 +21,17 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="fa" dir="rtl">
-      <body className={`${vazirmatn.className} font-sans antialiased`}>
+    <html lang="fa" dir="rtl" style={{ scrollBehavior: "smooth" }}>
+      <body 
+        className={`${vazirmatn.className} font-sans antialiased`}
+        style={{
+          direction: "rtl",
+          margin: 0,
+          padding: 0,
+          WebkitFontSmoothing: "antialiased",
+          MozOsxFontSmoothing: "grayscale",
+        }}
+      >
         {children}
         <Analytics />
       </body>

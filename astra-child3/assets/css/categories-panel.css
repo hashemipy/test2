@@ -156,6 +156,7 @@
   grid-template-columns: repeat(2, 1fr) !important;
   gap: 12px !important;
   padding: 15px !important;
+  direction: ltr !important; /* Fix RTL issues in Chrome */
 }
 
 /* استایل‌های جدید برای فیلتر سایز در پنل */
@@ -301,5 +302,58 @@
   .k-size-search-results-grid {
     grid-template-columns: repeat(5, 1fr) !important;
     gap: 15px !important;
+  }
+}
+
+/* Fix for Swiper horizontal scroll issues */
+.swiper {
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  width: 100% !important;
+  position: relative !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.swiper-wrapper {
+  display: flex !important;
+  flex-direction: row !important;
+  width: 100% !important;
+  position: relative !important;
+}
+
+.swiper-slide {
+  flex-shrink: 0 !important;
+  width: auto !important;
+  position: relative !important;
+}
+
+/* Ensure accordion swipers work properly */
+.accordion-swiper-latest,
+.accordion-swiper-girls,
+.accordion-swiper-boys,
+.accordion-swiper-sport {
+  width: 100% !important;
+  display: block !important;
+}
+
+.accordion-swiper-latest .swiper-wrapper,
+.accordion-swiper-girls .swiper-wrapper,
+.accordion-swiper-boys .swiper-wrapper,
+.accordion-swiper-sport .swiper-wrapper {
+  display: flex !important;
+}
+
+/* Chrome desktop fix for RTL and scrolling */
+@supports (-webkit-appearance: none) {
+  .swiper {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  
+  .swiper-wrapper {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
   }
 }

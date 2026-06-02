@@ -182,6 +182,100 @@
       })
     })
 
+    // Helper function to reinitialize swipers in categories panel
+    function reinitializeCategoryPanelSwipers() {
+      if (typeof Swiper === "undefined") return
+
+      const $swipers = $(".k-categories-products-inner .swiper")
+      
+      $swipers.each(function() {
+        const swiperEl = this
+        
+        // Destroy existing swiper if it exists
+        if (swiperEl.swiper) {
+          console.log("[v0] Destroying existing swiper")
+          swiperEl.swiper.destroy(true, true)
+        }
+        
+        console.log("[v0] Initializing new swiper")
+        const horizontalSwiper = new Swiper(swiperEl, {
+          slidesPerView: 2,
+          spaceBetween: 16,
+          loop: true,
+          speed: 3000,
+          autoplay: {
+            delay: 0,
+            disableOnInteraction: false,
+          },
+          freeMode: true,
+          freeModeMomentum: false,
+          breakpoints: {
+            640: {
+              slidesPerView: 2.5,
+              spaceBetween: 20,
+            },
+            768: {
+              slidesPerView: 3,
+              spaceBetween: 20,
+            },
+            1024: {
+              slidesPerView: 4,
+              spaceBetween: 20,
+            },
+            1280: {
+              slidesPerView: 5,
+              spaceBetween: 20,
+            },
+          },
+        })
+
+        // Add hover/touch handlers
+        let hoverTimeout
+        let isHovering = false
+        let isTouching = false
+
+        $(swiperEl).on("mouseenter", () => {
+          isHovering = true
+          horizontalSwiper.autoplay.stop()
+          if (hoverTimeout) {
+            clearTimeout(hoverTimeout)
+            hoverTimeout = null
+          }
+        })
+
+        $(swiperEl).on("mouseleave", () => {
+          isHovering = false
+          if (hoverTimeout) clearTimeout(hoverTimeout)
+
+          hoverTimeout = setTimeout(() => {
+            if (!isHovering && !isTouching) {
+              horizontalSwiper.autoplay.start()
+            }
+          }, 3000)
+        })
+
+        $(swiperEl).on("touchstart", () => {
+          isTouching = true
+          horizontalSwiper.autoplay.stop()
+          if (hoverTimeout) {
+            clearTimeout(hoverTimeout)
+            hoverTimeout = null
+          }
+        })
+
+        $(swiperEl).on("touchend", () => {
+          isTouching = false
+          if (hoverTimeout) clearTimeout(hoverTimeout)
+
+          hoverTimeout = setTimeout(() => {
+            if (!isHovering && !isTouching) {
+              horizontalSwiper.autoplay.start()
+            }
+          }, 3000)
+        })
+      })
+    }
+
     // Category item click handler
     $(document).on("click", ".k-category-item", function () {
       const $item = $(this)
@@ -224,6 +318,11 @@
           console.log("[v0] AJAX response:", response)
           if (response.success) {
             $(".k-categories-products-inner").html(response.data.html)
+
+            // Reinitialize swipers after content loads
+            setTimeout(() => {
+              reinitializeCategoryPanelSwipers()
+            }, 100)
 
             // If more products exist, add "Load More" button
             if (response.data.has_more) {
@@ -310,6 +409,11 @@
               `
               $(".k-categories-products-inner").append(loadMoreBtn)
             }
+
+            // Reinitialize swipers if any exist (for horizontally scrolling layout)
+            setTimeout(() => {
+              reinitializeCategoryPanelSwipers()
+            }, 100)
           }
         },
         error: () => {
@@ -741,93 +845,102 @@
     function initAccordionSwiper($content) {
       if (typeof Swiper === "undefined") return
 
-      const swiperEl = $content.find(".swiper")[0]
-      if (!swiperEl || swiperEl.swiper) return
-
-      const accordionSwiper = new Swiper(swiperEl, {
-        slidesPerView: 2,
-        spaceBetween: 16,
-        loop: true,
-        speed: 3000,
-        autoplay: {
-          delay: 0,
-          disableOnInteraction: false,
-        },
-        freeMode: true,
-        freeModeMomentum: false,
-        breakpoints: {
-          640: {
-            slidesPerView: 2.5,
-            spaceBetween: 20,
-          },
-          768: {
-            slidesPerView: 3,
-            spaceBetween: 20,
-          },
-          1024: {
-            slidesPerView: 4,
-            spaceBetween: 20,
-          },
-          1280: {
-            slidesPerView: 5,
-            spaceBetween: 20,
-          },
-        },
-      })
-
-      let hoverTimeout
-      let isHovering = false
-      let isTouching = false
-
-      $(swiperEl).on("mouseenter", () => {
-        isHovering = true
-        accordionSwiper.autoplay.stop()
-        if (hoverTimeout) {
-          clearTimeout(hoverTimeout)
-          hoverTimeout = null
+      // Get all swipers in this accordion content
+      const swipers = $content.find(".swiper")
+      
+      swipers.each(function() {
+        const swiperEl = this
+        
+        // Destroy existing swiper if it exists
+        if (swiperEl.swiper) {
+          swiperEl.swiper.destroy(true, true)
         }
-      })
+        
+        const accordionSwiper = new Swiper(swiperEl, {
+          slidesPerView: 2,
+          spaceBetween: 16,
+          loop: true,
+          speed: 3000,
+          autoplay: {
+            delay: 0,
+            disableOnInteraction: false,
+          },
+          freeMode: true,
+          freeModeMomentum: false,
+          breakpoints: {
+            640: {
+              slidesPerView: 2.5,
+              spaceBetween: 20,
+            },
+            768: {
+              slidesPerView: 3,
+              spaceBetween: 20,
+            },
+            1024: {
+              slidesPerView: 4,
+              spaceBetween: 20,
+            },
+            1280: {
+              slidesPerView: 5,
+              spaceBetween: 20,
+            },
+          },
+        })
 
-      $(swiperEl).on("mouseleave", () => {
-        isHovering = false
-        if (hoverTimeout) clearTimeout(hoverTimeout)
+        let hoverTimeout
+        let isHovering = false
+        let isTouching = false
 
-        hoverTimeout = setTimeout(() => {
-          if (!isHovering && !isTouching) {
-            accordionSwiper.autoplay.start()
+        $(swiperEl).on("mouseenter", () => {
+          isHovering = true
+          accordionSwiper.autoplay.stop()
+          if (hoverTimeout) {
+            clearTimeout(hoverTimeout)
+            hoverTimeout = null
           }
-        }, 3000)
-      })
+        })
 
-      $(swiperEl).on("touchstart", () => {
-        isTouching = true
-        accordionSwiper.autoplay.stop()
-        if (hoverTimeout) {
-          clearTimeout(hoverTimeout)
-          hoverTimeout = null
-        }
-      })
+        $(swiperEl).on("mouseleave", () => {
+          isHovering = false
+          if (hoverTimeout) clearTimeout(hoverTimeout)
 
-      $(swiperEl).on("touchend", () => {
-        isTouching = false
-        if (hoverTimeout) clearTimeout(hoverTimeout)
+          hoverTimeout = setTimeout(() => {
+            if (!isHovering && !isTouching) {
+              accordionSwiper.autoplay.start()
+            }
+          }, 3000)
+        })
 
-        hoverTimeout = setTimeout(() => {
-          if (!isHovering && !isTouching) {
-            accordionSwiper.autoplay.start()
+        $(swiperEl).on("touchstart", () => {
+          isTouching = true
+          accordionSwiper.autoplay.stop()
+          if (hoverTimeout) {
+            clearTimeout(hoverTimeout)
+            hoverTimeout = null
           }
-        }, 3000)
-      })
+        })
 
-      $(swiperEl).on("touchcancel", () => {
-        isTouching = false
-        if (hoverTimeout) clearTimeout(hoverTimeout)
+        $(swiperEl).on("touchend", () => {
+          isTouching = false
+          if (hoverTimeout) clearTimeout(hoverTimeout)
 
-        hoverTimeout = setTimeout(() => {
-          if (!isHovering && !isTouching) {
-            accordionSwiper.autoplay.start()
-          }
-        }, 3000)
+          hoverTimeout = setTimeout(() => {
+            if (!isHovering && !isTouching) {
+              accordionSwiper.autoplay.start()
+            }
+          }, 3000)
+        })
+
+        $(swiperEl).on("touchcancel", () => {
+          isTouching = false
+          if (hoverTimeout) clearTimeout(hoverTimeout)
+
+          hoverTimeout = setTimeout(() => {
+            if (!isHovering && !isTouching) {
+              accordionSwiper.autoplay.start()
+            }
+          }, 3000)
+        })
       })
     }
 
