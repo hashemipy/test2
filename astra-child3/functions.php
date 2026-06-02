@@ -371,3 +371,120 @@ function khoshtip_kocholo_remove_astra_header() {
     remove_action('astra_header', 'astra_header_markup');
 }
 add_action('init', 'khoshtip_kocholo_remove_astra_header');
+
+/**
+ * ============================================
+ * IRAN SERVER OPTIMIZATION - Disable External Resources
+ * ============================================
+ * این بخش منابع خارجی را غیرفعال می‌کند تا سایت روی سرورهای ایران سریع‌تر لود شود
+ */
+
+/**
+ * غیرفعال کردن Gravatar و استفاده از آواتار محلی
+ */
+function khoshtip_disable_gravatar($avatar, $id_or_email, $size, $default, $alt) {
+    $default_avatar = get_stylesheet_directory_uri() . '/assets/images/default-avatar.svg';
+    
+    // بررسی آیا کاربر تصویر پروفایل محلی دارد
+    if (is_numeric($id_or_email)) {
+        $user_id = $id_or_email;
+    } elseif (is_object($id_or_email) && isset($id_or_email->user_id)) {
+        $user_id = $id_or_email->user_id;
+    } elseif (is_string($id_or_email)) {
+        $user = get_user_by('email', $id_or_email);
+        $user_id = $user ? $user->ID : 0;
+    } else {
+        $user_id = 0;
+    }
+    
+    // بررسی تصویر پروفایل محلی (از متا یا Simple Local Avatars)
+    $local_avatar = $user_id ? get_user_meta($user_id, 'local_avatar', true) : '';
+    
+    if (!empty($local_avatar)) {
+        $avatar_url = $local_avatar;
+    } else {
+        $avatar_url = $default_avatar;
+    }
+    
+    return '<img alt="' . esc_attr($alt) . '" src="' . esc_url($avatar_url) . '" class="avatar avatar-' . $size . ' photo" height="' . $size . '" width="' . $size . '" loading="lazy" />';
+}
+add_filter('get_avatar', 'khoshtip_disable_gravatar', 10, 5);
+
+/**
+ * غیرفعال کردن Jetpack Photon CDN
+ */
+add_filter('jetpack_photon_skip_for_url', '__return_true');
+add_filter('jetpack_photon_development_mode', '__return_true');
+
+/**
+ * غیرفعال کردن srcset خارجی وردپرس
+ */
+function khoshtip_remove_external_srcset($sources, $size_array, $image_src, $image_meta, $attachment_id) {
+    // فقط منابع محلی را نگه دار
+    foreach ($sources as $width => $source) {
+        if (strpos($source['url'], 'wp.com') !== false || 
+            strpos($source['url'], 'gravatar.com') !== false ||
+            strpos($source['url'], 'googleapis.com') !== false) {
+            unset($sources[$width]);
+        }
+    }
+    return $sources;
+}
+add_filter('wp_calculate_image_srcset', 'khoshtip_remove_external_srcset', 10, 5);
+
+/**
+ * جایگزین کردن placeholder پیش‌فرض ووکامرس
+ */
+function khoshtip_local_woocommerce_placeholder($src) {
+    return get_stylesheet_directory_uri() . '/assets/images/placeholder.svg';
+}
+add_filter('woocommerce_placeholder_img_src', 'khoshtip_local_woocommerce_placeholder');
+
+/**
+ * غیرفعال کردن emoji خارجی وردپرس
+ */
+function khoshtip_disable_wp_emojis() {
+    remove_action('wp_head', 'print_emoji_detection_script', 7);
+    remove_action('admin_print_scripts', 'print_emoji_detection_script');
+    remove_action('wp_print_styles', 'print_emoji_styles');
+    remove_action('admin_print_styles', 'print_emoji_styles');
+    remove_filter('the_content_feed', 'wp_staticize_emoji');
+    remove_filter('comment_text_rss', 'wp_staticize_emoji');
+    remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
+}
+add_action('init', 'khoshtip_disable_wp_emojis');
+
+/**
+ * غیرفعال کردن oEmbed خارجی
+ */
+function khoshtip_disable_embeds() {
+    remove_action('wp_head', 'wp_oembed_add_discovery_links');
+    remove_action('wp_head', 'wp_oembed_add_host_js');
+}
+add_action('init', 'khoshtip_disable_embeds');
+
+/**
+ * غیرفعال کردن DNS Prefetch به سایت‌های خارجی
+ */
+function khoshtip_remove_dns_prefetch($urls, $relation_type) {
+    if ($relation_type === 'dns-prefetch') {
+        $external_domains = array(
+            'fonts.googleapis.com',
+            'fonts.gstatic.com',
+            's.w.org',
+            'gravatar.com',
+            'i0.wp.com',
+            'i1.wp.com',
+            'i2.wp.com',
+        );
+        foreach ($urls as $key => $url) {
+            foreach ($external_domains as $domain) {
+                if (strpos($url, $domain) !== false) {
+                    unset($urls[$key]);
+                }
+            }
+        }
+    }
+    return $urls;
+}
+add_filter('wp_resource_hints', 'khoshtip_remove_dns_prefetch', 10, 2);
