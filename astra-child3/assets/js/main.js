@@ -225,6 +225,14 @@
           if (response.success) {
             $(".k-categories-products-inner").html(response.data.html)
 
+            // Re-initialize Swiper for the loaded products
+            setTimeout(() => {
+              if (typeof Swiper !== "undefined") {
+                const $accordionContent = $(".k-categories-products-inner").closest(".accordion-content")
+                initAccordionSwiper($accordionContent)
+              }
+            }, 100)
+
             // If more products exist, add "Load More" button
             if (response.data.has_more) {
               const loadMoreBtn = `
