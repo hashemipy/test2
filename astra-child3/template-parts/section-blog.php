@@ -38,7 +38,7 @@ if (empty($post_ids)) {
                     <a href="<?php echo esc_url(get_permalink($post_id)); ?>" style="text-decoration: none; color: inherit; display: block;">
                         <?php if ($thumbnail) : ?>
                             <div style="position: relative; width: 100%; aspect-ratio: 16/9; overflow: hidden; background: #f5f5f5;">
-                                <img src="<?php echo esc_url($thumbnail); ?>" alt="<?php echo esc_attr($post->post_title); ?>" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';" />
+                                <img src="<?php echo esc_url($thumbnail); ?>" alt="<?php echo esc_attr($post->post_title); ?>" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';" />
                             </div>
                         <?php else: ?>
                             <div style="width: 100%; aspect-ratio: 16/9; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center;">
@@ -85,7 +85,7 @@ if (empty($post_ids)) {
                                 <a href="<?php echo esc_url(get_permalink($post_id)); ?>" style="text-decoration: none; color: inherit; display: block; height: 100%;">
                                     <?php if ($thumbnail) : ?>
                                         <div style="width: 100%; aspect-ratio: 16/9; overflow: hidden; background: #f5f5f5;">
-                                            <img src="<?php echo esc_url($thumbnail); ?>" alt="<?php echo esc_attr($post->post_title); ?>" style="width: 100%; height: 100%; object-fit: cover;" />
+                                            <img src="<?php echo esc_url($thumbnail); ?>" alt="<?php echo esc_attr($post->post_title); ?>" loading="lazy" style="width: 100%; height: 100%; object-fit: cover;" />
                                         </div>
                                     <?php else: ?>
                                         <div style="width: 100%; aspect-ratio: 16/9; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center;">

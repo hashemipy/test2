@@ -20,7 +20,7 @@ if (empty($stories)) {
                     <!-- Added wave animation to avatars with slower speed and bigger scale -->
                     <div class="story-ring story-wave" style="position: relative; width: 86px; height: 86px; border-radius: 50%; padding: 3px; background: linear-gradient(45deg, #ff6b6b, #ee5a6f, #c44569, #a5446a, #ff6b6b); background-size: 300% 300%; animation-delay: <?php echo $index * 0.15; ?>s;">
                         <div style="width: 100%; height: 100%; border-radius: 50%; overflow: hidden; background: oklch(1 0 0); display: flex; align-items: center; justify-content: center;">
-                            <img src="<?php echo esc_url($story['avatar_url']); ?>" alt="<?php echo esc_attr($story['user_name']); ?>" data-ai-hint="portrait person" style="width: 100%; height: 100%; object-fit: cover;" />
+                            <img src="<?php echo esc_url($story['avatar_url']); ?>" alt="<?php echo esc_attr($story['user_name']); ?>" loading="lazy" data-ai-hint="portrait person" style="width: 100%; height: 100%; object-fit: cover;" />
                         </div>
                     </div>
                     <span style="font-size: 0.875rem; font-weight: 500; text-align: center; color: hsl(var(--foreground));"><?php echo esc_html($story['user_name']); ?></span>
@@ -69,7 +69,7 @@ if (empty($stories)) {
                                             <?php if ($mediaType === 'video') : ?>
                                                 <video class="story-video" src="<?php echo esc_url($mediaUrl); ?>" style="width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius);" playsinline></video>
                                             <?php else : ?>
-                                                <img src="<?php echo esc_url($mediaUrl); ?>" alt="Story" style="width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius);" />
+                                                <img src="<?php echo esc_url($mediaUrl); ?>" alt="Story" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius);" />
                                             <?php endif; ?>
                                         </div>
                                     <?php endforeach; ?>
