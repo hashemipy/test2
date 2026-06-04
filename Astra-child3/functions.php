@@ -23,6 +23,9 @@ function khoshtip_kocholo_enqueue_styles() {
     // Enqueue Swiper CSS for carousels - LOCALLY HOSTED
     wp_enqueue_style('swiper-css', get_stylesheet_directory_uri() . '/assets/libs/swiper-bundle.min.css', array(), '11.0.0');
     
+    // Enqueue Swiper Override CSS for better control
+    wp_enqueue_style('swiper-override-css', get_stylesheet_directory_uri() . '/assets/css/swiper-override.css', array('swiper-css'), '1.0.0');
+    
     // ✅ Register jQuery (already built-in to WordPress) - DO NOT LOAD FROM CDN
     // jQuery is automatically loaded by WordPress core
     

@@ -153,6 +153,10 @@
         spaceBetween: 16,
         loop: true,
         speed: 3000,
+        resistance: true,
+        resistanceRatio: 0.85,
+        touchRatio: 1,
+        touchAngle: 45,
         autoplay: {
           delay: 0,
           disableOnInteraction: false,

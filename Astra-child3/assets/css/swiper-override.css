@@ -1,0 +1,225 @@
+/* Swiper Bundle Override CSS - Local Implementation */
+
+/* Critical: Force Swiper to use horizontal layout */
+.swiper-container,
+.swiper {
+  display: block !important;
+  position: relative !important;
+  overflow: hidden !important;
+  z-index: 1;
+  user-select: none;
+  touch-action: pan-y;
+  width: 100%;
+  height: 100%;
+  font-size: 0;
+}
+
+.swiper-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  display: flex !important;
+  flex-direction: row !important;
+  transition-property: transform !important;
+  box-sizing: content-box;
+}
+
+.swiper-slide {
+  flex-shrink: 0;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition-property: transform;
+  display: flex;
+  flex-direction: row;
+}
+
+/* Sales Swiper Specific Styles */
+.sales-swiper {
+  width: 100%;
+  height: auto;
+  padding: 1rem 0;
+}
+
+.sales-swiper .swiper-wrapper {
+  height: auto !important;
+  align-items: stretch;
+}
+
+.sales-swiper .swiper-slide {
+  width: auto !important;
+  height: auto !important;
+  margin-right: 1rem;
+  overflow: visible;
+}
+
+/* Disable vertical scrolling */
+.swiper-vertical > .swiper-wrapper {
+  flex-direction: row !important;
+}
+
+/* Navigation buttons */
+.swiper-button-next,
+.swiper-button-prev {
+  position: absolute;
+  top: 50%;
+  width: 44px;
+  height: 44px;
+  margin-top: -22px;
+  z-index: 10;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  user-select: none;
+  font-size: 22px;
+  transition-property: background-color, opacity;
+  right: 10px;
+}
+
+.swiper-button-prev {
+  left: 10px;
+  right: auto;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  background: rgba(255, 255, 255, 1);
+  color: #007aff;
+}
+
+/* Pagination */
+.swiper-pagination {
+  position: absolute;
+  text-align: center;
+  transition: 300ms opacity;
+  transform: translate3d(0, 0, 0);
+  z-index: 10;
+  bottom: 10px;
+  left: 0;
+  width: 100%;
+}
+
+.swiper-pagination-bullet {
+  background: rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  display: inline-block;
+  height: 8px;
+  margin: 0 5px;
+  opacity: 1;
+  width: 8px;
+  border-radius: 50%;
+  transition: background-color 200ms;
+}
+
+.swiper-pagination-bullet-active {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* Keyboard support */
+.swiper:focus {
+  outline: none;
+}
+
+/* Touch ripple effect (optional) */
+.swiper-slide-active {
+  z-index: 1;
+}
+
+/* Prevent text selection while swiping */
+.swiper-slide {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Fix for RTL (Right-to-Left) languages */
+[dir="rtl"] .swiper-wrapper {
+  flex-direction: row-reverse !important;
+}
+
+[dir="rtl"] .sales-swiper .swiper-slide {
+  margin-right: 0;
+  margin-left: 1rem;
+}
+
+[dir="rtl"] .swiper-button-next {
+  left: 10px;
+  right: auto;
+}
+
+[dir="rtl"] .swiper-button-prev {
+  right: 10px;
+  left: auto;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 640px) {
+  .swiper-button-next,
+  .swiper-button-prev {
+    display: none;
+  }
+
+  .sales-swiper .swiper-slide {
+    margin-right: 0.75rem;
+  }
+
+  [dir="rtl"] .sales-swiper .swiper-slide {
+    margin-left: 0.75rem;
+  }
+}
+
+/* Loading state */
+.swiper-lazy-preloader {
+  width: 42px;
+  height: 42px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -21px;
+  margin-top: -21px;
+  z-index: 10;
+  transform-origin: 50%;
+  animation: swiper-preloader-spin 1s infinite linear;
+  box-sizing: border-box;
+  border: 4px solid rgba(5, 5, 5, 0.25);
+  border-radius: 50%;
+  border-top-color: rgba(5, 5, 5, 0.8);
+}
+
+@keyframes swiper-preloader-spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Disabled state */
+.swiper-button-disabled {
+  opacity: 0.5;
+  cursor: auto;
+  pointer-events: none;
+}
+
+/* Accessibility */
+.swiper-slide[aria-label] {
+  position: relative;
+}
+
+/* Fix for webkit browsers */
+.swiper-wrapper {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  perspective: 1000;
+}
+
+.swiper-slide {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  perspective: 1000;
+}
