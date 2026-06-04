@@ -52,11 +52,11 @@ if (empty($product_ids) || ($sale_end_timestamp > 0 && $sale_end_timestamp < tim
         </div>
         
         <!-- Product Carousel -->
-        <div class="sales-carousel-wrapper" style="width: 100%; overflow: hidden; margin-top: 2rem;">
-            <div class="swiper sales-swiper" style="width: 100%; overflow: visible;">
-                <div class="swiper-wrapper" style="display: flex; flex-direction: row; width: 100%;">
+        <div class="sales-carousel-wrapper" style="width: 100%; overflow: hidden; margin-top: 2rem; background: transparent;">
+            <div class="swiper sales-swiper" style="width: 100%; overflow: visible; padding: 0;">
+                <div class="swiper-wrapper" style="display: flex; flex-direction: row; width: 100%; align-items: stretch;">
                     <?php foreach ($product_ids as $product_id) : ?>
-                        <div class="swiper-slide" style="flex-shrink: 0; width: auto; display: flex;">
+                        <div class="swiper-slide" style="flex-shrink: 0; width: auto; height: auto; display: flex; align-items: stretch;">
                             <?php echo khoshtip_kocholo_get_product_card($product_id); ?>
                         </div>
                     <?php endforeach; ?>

@@ -18,6 +18,12 @@
   }
 }
 
+/* Override product card margin in Swiper carousel */
+.sales-swiper .swiper-slide .product-card {
+  margin: 0 !important;
+  min-width: 200px;
+}
+
 .product-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 10px 20px rgba(255, 182, 193, 0.4);

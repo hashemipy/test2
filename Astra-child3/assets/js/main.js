@@ -149,38 +149,26 @@
     if ($(".sales-swiper").length && typeof Swiper !== "undefined") {
       const salesSwiper = new Swiper(".sales-swiper", {
         direction: "horizontal",
-        slidesPerView: 2,
-        spaceBetween: 16,
+        slidesPerView: "auto",
+        spaceBetween: 12,
         loop: true,
-        speed: 3000,
-        resistance: true,
-        resistanceRatio: 0.85,
+        loopAdditionalSlides: 3,
+        loopFillGroupWithBlank: false,
+        speed: 4000,
+        resistance: false,
+        resistanceRatio: 0,
         touchRatio: 1,
         touchAngle: 45,
+        watchSlidesProgress: true,
+        centeredSlides: false,
         autoplay: {
           delay: 0,
           disableOnInteraction: false,
+          pauseOnMouseEnter: true,
         },
-        freeMode: true,
+        freeMode: false,
         freeModeMomentum: false,
-        breakpoints: {
-          640: {
-            slidesPerView: 2.5,
-            spaceBetween: 20,
-          },
-          768: {
-            slidesPerView: 3,
-            spaceBetween: 20,
-          },
-          1024: {
-            slidesPerView: 4,
-            spaceBetween: 20,
-          },
-          1280: {
-            slidesPerView: 5,
-            spaceBetween: 20,
-          },
-        },
+        breakpoints: {},
       })
 
       let hoverTimeout

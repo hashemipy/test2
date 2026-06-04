@@ -17,7 +17,7 @@
 .swiper-wrapper {
   position: relative;
   width: 100%;
-  height: 100%;
+  height: auto;
   z-index: 1;
   display: flex !important;
   flex-direction: row !important;
@@ -27,8 +27,8 @@
 
 .swiper-slide {
   flex-shrink: 0;
-  width: 100%;
-  height: 100%;
+  width: auto;
+  height: auto;
   position: relative;
   transition-property: transform;
   display: flex;
@@ -39,19 +39,33 @@
 .sales-swiper {
   width: 100%;
   height: auto;
-  padding: 1rem 0;
+  padding: 0;
+  margin: 0;
 }
 
 .sales-swiper .swiper-wrapper {
   height: auto !important;
-  align-items: stretch;
+  align-items: stretch !important;
+  gap: 0 !important;
 }
 
 .sales-swiper .swiper-slide {
   width: auto !important;
   height: auto !important;
-  margin-right: 1rem;
-  overflow: visible;
+  margin-right: 1rem !important;
+  margin-bottom: 0 !important;
+  overflow: visible !important;
+  display: flex !important;
+  align-items: stretch !important;
+  flex-shrink: 0 !important;
+}
+
+.sales-carousel-wrapper {
+  width: 100%;
+  overflow: hidden;
+  margin: 2rem 0 0 0;
+  padding: 0;
+  background: transparent;
 }
 
 /* Disable vertical scrolling */
