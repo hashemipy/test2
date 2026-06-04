@@ -3,6 +3,12 @@
  * Sales Section Template
  */
 
+// Check if sales carousel is enabled
+$sale_carousel_enabled = get_option('k_sale_carousel_enabled', '1');
+if ($sale_carousel_enabled !== '1') {
+    return;
+}
+
 // Get sales data from shortcode
 $sales_data = json_decode(do_shortcode('[k_sales_data]'), true);
 $sale_end_timestamp = $sales_data['sale_end_timestamp'] ?? 0;

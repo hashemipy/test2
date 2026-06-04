@@ -418,6 +418,7 @@ class KK_Admin_Tabs {
         
         $sale_button_enabled = get_option('k_sale_button_enabled', '1');
         $sale_button_color = get_option('k_sale_button_color', '#ff4757');
+        $sale_carousel_enabled = get_option('k_sale_carousel_enabled', '1');
         
         $product_categories = get_terms(array(
             'taxonomy' => 'product_cat',
@@ -446,6 +447,16 @@ class KK_Admin_Tabs {
                         <td>
                             <input type="text" name="k_sale_button_color" value="<?php echo esc_attr($sale_button_color); ?>" class="k-color-picker" />
                             <p class="description">رنگ پس‌زمینه دکمه حراجی را انتخاب کنید.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">نمایش اسکرول حراجی</th>
+                        <td>
+                            <label>
+                                <input type="checkbox" name="k_sale_carousel_enabled" value="1" <?php checked($sale_carousel_enabled, '1'); ?> />
+                                نمایش اسکرول افقی محصولات حراجی در صفحه اصلی
+                            </label>
+                            <p class="description">اگر فعال باشد، یک اسکرول افقی حاوی محصولات حراجی در صفحه اصلی نمایش داده می‌شود.</p>
                         </td>
                     </tr>
                 </table>
@@ -517,7 +528,7 @@ class KK_Admin_Tabs {
                         <td>
                             <div style="display: flex; gap: 10px;">
                                 <button type="button" class="button button-primary button-large" id="k-start-sale">
-                                    🚀 شروع حراجی (اعمال تایمر + تخفیف‌ها)
+                                    🚀 شروع حراجی (اعم��ل تایمر + تخفیف‌ها)
                                 </button>
                                 <?php if ($time_remaining > 0) : ?>
                                 <button type="button" class="button button-secondary" id="k-cancel-sale" style="background: #d63638; color: #fff; border-color: #d63638;">
@@ -899,6 +910,7 @@ class KK_Admin_Tabs {
     private function save_sales_tab($data) {
         update_option('k_sale_button_enabled', isset($data['k_sale_button_enabled']) ? '1' : '0');
         update_option('k_sale_button_color', sanitize_hex_color($data['k_sale_button_color'] ?? '#ff4757'));
+        update_option('k_sale_carousel_enabled', isset($data['k_sale_carousel_enabled']) ? '1' : '0');
         
         // Sales are managed via AJAX actions
     }

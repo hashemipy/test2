@@ -148,6 +148,7 @@
     // Initialize Sales Swiper with custom hover behavior
     if ($(".sales-swiper").length && typeof Swiper !== "undefined") {
       const salesSwiper = new Swiper(".sales-swiper", {
+        direction: "horizontal",
         slidesPerView: 2,
         spaceBetween: 16,
         loop: true,

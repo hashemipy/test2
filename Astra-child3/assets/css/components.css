@@ -506,6 +506,24 @@
 }
 
 /* Swiper Custom Styles */
+.swiper {
+  overflow: visible;
+  width: 100%;
+}
+
+.swiper-wrapper {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.swiper-slide {
+  flex-shrink: 0;
+  width: auto;
+  height: auto;
+}
+
 .swiper-button-next,
 .swiper-button-prev {
   color: hsl(var(--primary));
@@ -513,6 +531,11 @@
 
 .swiper-pagination-bullet-active {
   background-color: hsl(var(--primary));
+}
+
+/* RTL Support for Persian/Arabic text */
+[dir="rtl"] .swiper-wrapper {
+  flex-direction: row;
 }
 
 /* Added spacing between swiper slides on desktop */
