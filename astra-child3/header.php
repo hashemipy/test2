@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php wp_head(); ?>
 </head>
-<body <?php body_class(); ?>>
+<body <?php body_class(); ?> style="background-color: <?php echo esc_attr($main_bg_color); ?>;">
 <?php wp_body_open(); ?>
 
 <?php
@@ -27,6 +27,12 @@ $mobile_menu_links = $header_data['mobile_menu_links'] ?? $nav_links;
 
 $header_gradient_start = get_option('k_header_gradient_start', '#ff6b9d');
 $header_gradient_end = get_option('k_header_gradient_end', '#ffc3d7');
+
+// Get background colors
+$main_bg_color = get_option('k_main_background_color', '#ffffff');
+$accordion_bg_color = get_option('k_accordion_background_color', '#f5f5f5');
+$blog_bg_color = get_option('k_blog_background_color', '#ffffff');
+$banner_bg_color = get_option('k_banner_background_color', '#f9fafb');
 
 $current_user = wp_get_current_user();
 $is_logged_in = is_user_logged_in();

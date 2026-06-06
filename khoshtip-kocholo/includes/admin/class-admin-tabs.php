@@ -1784,6 +1784,114 @@ class KK_Admin_Tabs {
         update_option('k_categories_panel_categories', $panel_cats);
     }
 
+    // ==========================================
+    // BACKGROUND COLORS TAB (تنظیمات رنگ پس‌زمینه)
+    // ==========================================
+
+    private function render_background_colors_tab() {
+        $main_bg_color = get_option('k_main_background_color', '#ffffff');
+        $accordion_bg_color = get_option('k_accordion_background_color', '#f5f5f5');
+        $blog_bg_color = get_option('k_blog_background_color', '#ffffff');
+        $banner_bg_color = get_option('k_banner_background_color', '#f9fafb');
+        ?>
+        <div class="settings-section">
+            <h2>🎨 <?php esc_html_e('تنظیمات رنگ پس‌زمینه سایت', 'khoshtip-kocholo'); ?></h2>
+            <p class="description"><?php esc_html_e('رنگ‌های پس‌زمینه قسمت‌های مختلف سایت را تنظیم کنید.', 'khoshtip-kocholo'); ?></p>
+
+            <table class="form-table">
+                <tr>
+                    <th scope="row">
+                        <label for="k_main_background_color">
+                            <?php esc_html_e('رنگ پس‌زمینه اصلی سایت', 'khoshtip-kocholo'); ?>
+                        </label>
+                    </th>
+                    <td>
+                        <input type="text" 
+                               id="k_main_background_color" 
+                               name="k_main_background_color" 
+                               value="<?php echo esc_attr($main_bg_color); ?>" 
+                               class="k-color-picker"
+                               data-default="#ffffff">
+                        <p class="description">
+                            <?php esc_html_e('رنگ پس‌زمینه اصلی صفحه که اکاردئون‌ها، بلاگ‌ها و بنر روی آن قرار دارند.', 'khoshtip-kocholo'); ?>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">
+                        <label for="k_accordion_background_color">
+                            <?php esc_html_e('رنگ پس‌زمینه نوار اکاردئون', 'khoshtip-kocholo'); ?>
+                        </label>
+                    </th>
+                    <td>
+                        <input type="text" 
+                               id="k_accordion_background_color" 
+                               name="k_accordion_background_color" 
+                               value="<?php echo esc_attr($accordion_bg_color); ?>" 
+                               class="k-color-picker"
+                               data-default="#f5f5f5">
+                        <p class="description">
+                            <?php esc_html_e('رنگ پس‌زمینه نوار‌های اکاردئونی در سایت.', 'khoshtip-kocholo'); ?>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">
+                        <label for="k_blog_background_color">
+                            <?php esc_html_e('رنگ پس‌زمینه بلاگ', 'khoshtip-kocholo'); ?>
+                        </label>
+                    </th>
+                    <td>
+                        <input type="text" 
+                               id="k_blog_background_color" 
+                               name="k_blog_background_color" 
+                               value="<?php echo esc_attr($blog_bg_color); ?>" 
+                               class="k-color-picker"
+                               data-default="#ffffff">
+                        <p class="description">
+                            <?php esc_html_e('رنگ پس‌زمینه بخش بلاگ و مقالات.', 'khoshtip-kocholo'); ?>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">
+                        <label for="k_banner_background_color">
+                            <?php esc_html_e('رنگ پس‌زمینه بنر', 'khoshtip-kocholo'); ?>
+                        </label>
+                    </th>
+                    <td>
+                        <input type="text" 
+                               id="k_banner_background_color" 
+                               name="k_banner_background_color" 
+                               value="<?php echo esc_attr($banner_bg_color); ?>" 
+                               class="k-color-picker"
+                               data-default="#f9fafb">
+                        <p class="description">
+                            <?php esc_html_e('رنگ پس‌زمینه بنر و اسلایدها.', 'khoshtip-kocholo'); ?>
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="k-notice k-notice-warning" style="margin-top: 20px;">
+            <strong><?php esc_html_e('نکات مهم:', 'khoshtip-kocholo'); ?></strong>
+            <ul style="margin: 10px 0 0 20px; list-style: disc;">
+                <li><?php esc_html_e('رنگ‌های انتخاب شده در کل سایت اعمال می‌شوند.', 'khoshtip-kocholo'); ?></li>
+                <li><?php esc_html_e('برای دیدن تغییرات، صفحه را بازخانی کنید.', 'khoshtip-kocholo'); ?></li>
+                <li><?php esc_html_e('رنگ‌های روشن برای سایت‌های سبک و رنگ‌های تیره برای سایت‌های تاریک توصیه می‌شود.', 'khoshtip-kocholo'); ?></li>
+            </ul>
+        </div>
+        <?php
+    }
+
+    private function save_background_colors_tab($data) {
+        update_option('k_main_background_color', sanitize_hex_color($data['k_main_background_color'] ?? '#ffffff'));
+        update_option('k_accordion_background_color', sanitize_hex_color($data['k_accordion_background_color'] ?? '#f5f5f5'));
+        update_option('k_blog_background_color', sanitize_hex_color($data['k_blog_background_color'] ?? '#ffffff'));
+        update_option('k_banner_background_color', sanitize_hex_color($data['k_banner_background_color'] ?? '#f9fafb'));
+    }
+
     private function render_categories_panel_tab() {
         $enabled = get_option('k_categories_panel_enabled', '0');
         $button_label = get_option('k_categories_panel_button_label', 'دسته بندی');

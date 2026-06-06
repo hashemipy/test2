@@ -10,9 +10,12 @@ $slides = $hero_data['slides'] ?? array();
 if (empty($slides)) {
     return;
 }
+
+// Get banner background color
+$banner_bg_color = get_option('k_banner_background_color', '#f9fafb');
 ?>
 
-<section class="hero-section">
+<section class="hero-section" style="background-color: <?php echo esc_attr($banner_bg_color); ?>;">
     <div class="swiper hero-swiper">
         <div class="swiper-wrapper">
             <?php foreach ($slides as $slide) : ?>

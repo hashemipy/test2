@@ -961,6 +961,10 @@ class KK_Admin {
                 <a href="?page=khoshtip-kocholo-control&tab=footer" class="nav-tab <?php echo $active_tab === 'footer' ? 'nav-tab-active' : ''; ?>">
                     فوتر
                 </a>
+                <!-- تب رنگ‌های پس‌زمینه -->
+                <a href="?page=khoshtip-kocholo-control&tab=background_colors" class="nav-tab <?php echo $active_tab === 'background_colors' ? 'nav-tab-active' : ''; ?>">
+                    رنگ پس‌زمینه
+                </a>
                 <!-- اضافه کردن تب پنل دسته‌بندی -->
                 <a href="?page=khoshtip-kocholo-control&tab=categories_panel" class="nav-tab <?php echo $active_tab === 'categories_panel' ? 'nav-tab-active' : ''; ?>">
                     پنل دسته‌بندی

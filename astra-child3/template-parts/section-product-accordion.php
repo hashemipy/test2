@@ -7,6 +7,9 @@ $accordion_data = json_decode(do_shortcode('[k_accordion_products_data]'), true)
 
 error_log('[v0] Template received data: ' . print_r($accordion_data, true));
 
+// Get accordion background color
+$accordion_bg_color = get_option('k_accordion_background_color', '#f5f5f5');
+
 $latest_title = $accordion_data['latest_title'] ?? 'همه محصولات';
 $latest_view_all_text = $accordion_data['latest_view_all_text'] ?? 'نمایش همه ←';
 $latest_gradient_start = $accordion_data['latest_gradient_start'] ?? '#f093fb';
@@ -222,7 +225,7 @@ usort($all_sections, function($a, $b) {
 
 ?>
 
-<section class="product-accordion-section" style="padding: 3rem 0;">
+<section class="product-accordion-section" style="padding: 3rem 0; background-color: <?php echo esc_attr($accordion_bg_color); ?>;">
     <div class="container">
         <div class="accordion-container" style="display: flex; flex-direction: column; gap: 1rem;">
             

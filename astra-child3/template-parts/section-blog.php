@@ -10,9 +10,12 @@ $post_ids = $blog_data['post_ids'] ?? array();
 if (empty($post_ids)) {
     return;
 }
+
+// Get blog background color
+$blog_bg_color = get_option('k_blog_background_color', '#ffffff');
 ?>
 
-<section class="blog-section" style="padding: 4rem 0; background: linear-gradient(to bottom, #fafafa, #ffffff);">
+<section class="blog-section" style="padding: 4rem 0; background-color: <?php echo esc_attr($blog_bg_color); ?>;">
     <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 1rem;">
         <div style="text-align: center; margin-bottom: 3rem;">
             <h2 style="font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 700; color: #1a1a1a; margin-bottom: 0.5rem;">📚 آخرین مقالات بلاگ</h2>
