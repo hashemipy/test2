@@ -1582,6 +1582,11 @@ class KK_Admin_Tabs {
         $contact_phone = get_option('k_footer_contact_phone', '');
         $copyright_text = get_option('k_footer_copyright', '');
 
+        // تنظیمات رنگ فوتر
+        $footer_bg_start = get_option('k_footer_bg_start', '#667eea');
+        $footer_bg_end = get_option('k_footer_bg_end', '#764ba2');
+        $footer_text_color = get_option('k_footer_text_color', '#ffffff');
+
         $bottom_bar_show_home = get_option('k_bottom_bar_show_home', '1');
         $bottom_bar_show_products = get_option('k_bottom_bar_show_products', '1');
         $bottom_bar_show_all_products = get_option('k_bottom_bar_show_all_products', '1');
@@ -1646,6 +1651,30 @@ class KK_Admin_Tabs {
             <tr>
                 <th scope="row"><?php esc_html_e('متن کپی‌رایت', 'khoshtip-kocholo'); ?></th>
                 <td><input type="text" name="k_footer_copyright" value="<?php echo esc_attr($copyright_text); ?>" class="large-text"></td>
+            </tr>
+        </table>
+
+        <h3><?php esc_html_e('رنگ‌های فوتر', 'khoshtip-kocholo'); ?></h3>
+        <table class="form-table">
+            <tr>
+                <th scope="row"><?php esc_html_e('رنگ‌های پس‌زمینه', 'khoshtip-kocholo'); ?></th>
+                <td>
+                    <label style="display:block;margin-bottom:10px;">
+                        <span style="display:inline-block;width:120px;"><?php esc_html_e('رنگ شروع:', 'khoshtip-kocholo'); ?></span>
+                        <input type="text" name="k_footer_bg_start" value="<?php echo esc_attr($footer_bg_start); ?>" class="k-color-picker">
+                    </label>
+                    <label style="display:block;">
+                        <span style="display:inline-block;width:120px;"><?php esc_html_e('رنگ پایان:', 'khoshtip-kocholo'); ?></span>
+                        <input type="text" name="k_footer_bg_end" value="<?php echo esc_attr($footer_bg_end); ?>" class="k-color-picker">
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row"><?php esc_html_e('رنگ متن و لینک‌ها', 'khoshtip-kocholo'); ?></th>
+                <td>
+                    <input type="text" name="k_footer_text_color" value="<?php echo esc_attr($footer_text_color); ?>" class="k-color-picker">
+                    <p class="description"><?php esc_html_e('رنگ متن و لینک‌های فوتر', 'khoshtip-kocholo'); ?></p>
+                </td>
             </tr>
         </table>
 
@@ -1742,6 +1771,11 @@ class KK_Admin_Tabs {
         update_option('k_footer_contact_address', sanitize_text_field($data['k_footer_contact_address'] ?? ''));
         update_option('k_footer_contact_phone', sanitize_text_field($data['k_footer_contact_phone'] ?? ''));
         update_option('k_footer_copyright', sanitize_text_field($data['k_footer_copyright'] ?? ''));
+
+        // ذخیره رنگ‌های فوتر
+        update_option('k_footer_bg_start', sanitize_hex_color($data['k_footer_bg_start'] ?? '#667eea'));
+        update_option('k_footer_bg_end', sanitize_hex_color($data['k_footer_bg_end'] ?? '#764ba2'));
+        update_option('k_footer_text_color', sanitize_hex_color($data['k_footer_text_color'] ?? '#ffffff'));
 
         update_option('k_bottom_bar_bg_start', sanitize_hex_color($data['k_bottom_bar_bg_start'] ?? '#ffffff'));
         update_option('k_bottom_bar_bg_end', sanitize_hex_color($data['k_bottom_bar_bg_end'] ?? '#f9fafb'));

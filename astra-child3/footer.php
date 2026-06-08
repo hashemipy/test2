@@ -45,25 +45,30 @@ if (function_exists('WC') && WC()->cart) {
 $panel_data = json_decode(do_shortcode('[k_categories_panel_data]'), true);
 $panel_enabled = $panel_data['enabled'] ?? false;
 $panel_auto_open = $panel_data['auto_open'] ?? false;
+
+// دریافت رنگ‌های فوتر از تنظیمات
+$footer_bg_start = get_option('k_footer_bg_start', '#667eea');
+$footer_bg_end = get_option('k_footer_bg_end', '#764ba2');
+$footer_text_color = get_option('k_footer_text_color', '#ffffff');
 ?>
 
-<footer class="site-footer" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 3rem 0 1rem; margin-top: 4rem; <?php echo $should_show_bottom_bar ? 'margin-bottom: 70px;' : ''; ?>">
+<footer class="site-footer" style="background: linear-gradient(135deg, <?php echo esc_attr($footer_bg_start); ?> 0%, <?php echo esc_attr($footer_bg_end); ?> 100%); color: <?php echo esc_attr($footer_text_color); ?>; padding: 3rem 0 1rem; margin-top: 4rem; <?php echo $should_show_bottom_bar ? 'margin-bottom: 70px;' : ''; ?>"">
     <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 1rem;">
         <div class="footer-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2.5rem; margin-bottom: 2.5rem;">
             
             <!-- About Column -->
             <div class="footer-column">
-                <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; color: white;"><?php echo esc_html($site_title); ?></h3>
-                <p style="opacity: 0.95; line-height: 1.7; font-size: 0.95rem;"><?php echo esc_html($site_description); ?></p>
+                <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; color: <?php echo esc_attr($footer_text_color); ?>;"><?php echo esc_html($site_title); ?></h3>
+                <p style="opacity: 0.95; line-height: 1.7; font-size: 0.95rem; color: <?php echo esc_attr($footer_text_color); ?>;"><?php echo esc_html($site_description); ?></p>
             </div>
             
             <!-- Useful Links Column -->
             <?php if (!empty($useful_links)) : ?>
             <div class="footer-column">
-                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; color: white;">لینک‌های مفید</h3>
+                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; color: <?php echo esc_attr($footer_text_color); ?>;">لینک‌های مفید</h3>
                 <nav style="display: flex; flex-direction: column; gap: 0.75rem;">
                     <?php foreach ($useful_links as $link) : ?>
-                        <a href="<?php echo esc_url($link['url']); ?>" style="color: white; opacity: 0.9; text-decoration: none; transition: opacity 0.3s; font-size: 0.95rem;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.9'">
+                        <a href="<?php echo esc_url($link['url']); ?>" style="color: <?php echo esc_attr($footer_text_color); ?>; opacity: 0.9; text-decoration: none; transition: opacity 0.3s; font-size: 0.95rem;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.9'">
                             <?php echo esc_html($link['text']); ?>
                         </a>
                     <?php endforeach; ?>
@@ -74,10 +79,10 @@ $panel_auto_open = $panel_data['auto_open'] ?? false;
             <!-- Customer Service Column -->
             <?php if (!empty($customer_service_links)) : ?>
             <div class="footer-column">
-                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; color: white;">خدمات مشتریان</h3>
+                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; color: <?php echo esc_attr($footer_text_color); ?>;">خدمات مشتریان</h3>
                 <nav style="display: flex; flex-direction: column; gap: 0.75rem;">
                     <?php foreach ($customer_service_links as $link) : ?>
-                        <a href="<?php echo esc_url($link['url']); ?>" style="color: white; opacity: 0.9; text-decoration: none; transition: opacity 0.3s; font-size: 0.95rem;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.9'">
+                        <a href="<?php echo esc_url($link['url']); ?>" style="color: <?php echo esc_attr($footer_text_color); ?>; opacity: 0.9; text-decoration: none; transition: opacity 0.3s; font-size: 0.95rem;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.9'">
                             <?php echo esc_html($link['text']); ?>
                         </a>
                     <?php endforeach; ?>
@@ -87,10 +92,10 @@ $panel_auto_open = $panel_data['auto_open'] ?? false;
             
             <!-- Contact Column -->
             <div class="footer-column">
-                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; color: white;">تماس با ما</h3>
+                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; color: <?php echo esc_attr($footer_text_color); ?>;">تماس با ما</h3>
                 <div style="display: flex; flex-direction: column; gap: 1rem; font-size: 0.95rem;">
                     <?php if (!empty($contact_address)) : ?>
-                        <div style="display: flex; align-items: start; gap: 0.5rem; opacity: 0.95;">
+                        <div style="display: flex; align-items: start; gap: 0.5rem; opacity: 0.95; color: <?php echo esc_attr($footer_text_color); ?>;">
                             <span style="font-size: 1.2rem;">📍</span>
                             <span style="line-height: 1.6;"><?php echo esc_html($contact_address); ?></span>
                         </div>
@@ -98,7 +103,7 @@ $panel_auto_open = $panel_data['auto_open'] ?? false;
                     <?php if (!empty($contact_phone)) : ?>
                         <div style="display: flex; align-items: center; gap: 0.5rem; opacity: 0.95;">
                             <span style="font-size: 1.2rem;">📞</span>
-                            <a href="tel:<?php echo esc_attr($contact_phone); ?>" style="color: white; text-decoration: none; direction: ltr; display: inline-block;"><?php echo esc_html($contact_phone); ?></a>
+                            <a href="tel:<?php echo esc_attr($contact_phone); ?>" style="color: <?php echo esc_attr($footer_text_color); ?>; text-decoration: none; direction: ltr; display: inline-block;"><?php echo esc_html($contact_phone); ?></a>
                         </div>
                     <?php endif; ?>
                 </div>
@@ -107,8 +112,8 @@ $panel_auto_open = $panel_data['auto_open'] ?? false;
         </div>
         
         <!-- Copyright -->
-        <div class="footer-bottom" style="margin-top: 2.5rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.2); text-align: center;">
-            <p style="opacity: 0.9; font-size: 0.95rem;"><?php echo esc_html($copyright); ?></p>
+        <div class="footer-bottom" style="margin-top: 2.5rem; padding-top: 2rem; border-top: 1px solid <?php echo esc_attr($footer_text_color); ?> rgba(0,0,0,0.2); text-align: center;">
+            <p style="opacity: 0.9; font-size: 0.95rem; color: <?php echo esc_attr($footer_text_color); ?>;"><?php echo esc_html($copyright); ?></p>
         </div>
     </div>
 </footer>
