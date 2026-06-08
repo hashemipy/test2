@@ -52,7 +52,7 @@ $footer_bg_end = get_option('k_footer_bg_end', '#764ba2');
 $footer_text_color = get_option('k_footer_text_color', '#ffffff');
 ?>
 
-<footer class="site-footer" style="background: linear-gradient(135deg, <?php echo esc_attr($footer_bg_start); ?> 0%, <?php echo esc_attr($footer_bg_end); ?> 100%); color: <?php echo esc_attr($footer_text_color); ?>; padding: 3rem 0 1rem; margin-top: 4rem; <?php echo $should_show_bottom_bar ? 'margin-bottom: 70px;' : ''; ?>"">
+<footer class="site-footer" style="background: linear-gradient(135deg, <?php echo esc_attr($footer_bg_start); ?> 0%, <?php echo esc_attr($footer_bg_end); ?> 100%); color: <?php echo esc_attr($footer_text_color); ?>; padding: 3rem 0 1rem; <?php echo $should_show_bottom_bar ? 'margin-bottom: 70px;' : ''; ?>"">
     <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 1rem;">
         <div class="footer-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2.5rem; margin-bottom: 2.5rem;">
             
