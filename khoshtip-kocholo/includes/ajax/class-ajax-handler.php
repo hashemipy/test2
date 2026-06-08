@@ -27,7 +27,6 @@ class KK_Ajax_Handler {
         add_action('wp_ajax_k_remove_discount', [$this, 'remove_discount']);
         
         // Price adjustment handlers
-        add_action('wp_ajax_k_get_products_for_price_adjustment', [$this, 'get_products_for_price_adjustment']);
         add_action('wp_ajax_k_apply_price_increase', [$this, 'apply_price_increase']);
         add_action('wp_ajax_k_revert_prices', [$this, 'revert_prices']);
         add_action('wp_ajax_k_get_price_history', [$this, 'get_price_history']);
@@ -190,7 +189,7 @@ class KK_Ajax_Handler {
         }
         
         if (!function_exists('wc_get_product')) {
-            wp_send_json_error(['message' => __('ووکامرس فعال نیست', 'khoshtip-kocholo')]);
+            wp_send_json_error(['message' => __('ووک��مرس فعال نیست', 'khoshtip-kocholo')]);
         }
         
         $product_ids = isset($_POST['product_ids']) ? array_map('absint', $_POST['product_ids']) : [];
@@ -1104,48 +1103,10 @@ class KK_Ajax_Handler {
         wp_send_json_success(['count' => $count]);
     }
 
-    /**
-     * Get products for price adjustment
-     */
-    public function get_products_for_price_adjustment() {
-        if (!current_user_can('manage_options')) {
-            wp_send_json_error(['message' => 'دسترسی رد شد']);
-        }
-
-        check_ajax_referer('k_save_nonce', 'nonce');
-
-        $category_id = absint($_POST['category_id'] ?? 0);
-        $increase_percent = floatval($_POST['increase_percent'] ?? 25);
-
-        $args = [
-            'status' => 'publish',
-            'limit' => 500,
-        ];
-
-        if ($category_id > 0) {
-            $args['category'] = $category_id;
-        }
-
-        $products = wc_get_products($args);
-        $product_list = [];
-
-        foreach ($products as $product) {
-            $regular_price = (float) $product->get_regular_price();
-            
-            if ($regular_price > 0) {
-                $product_list[] = [
-                    'id' => $product->get_id(),
-                    'name' => $product->get_name(),
-                    'regular_price' => $regular_price,
-                ];
-            }
-        }
-
-        wp_send_json_success(['products' => $product_list]);
-    }
+    // This function is no longer needed as we use get_products_by_category instead
 
     /**
-     * Apply price increase to products
+     * Apply price increase to selected products
      */
     public function apply_price_increase() {
         if (!current_user_can('manage_options')) {
@@ -1154,23 +1115,17 @@ class KK_Ajax_Handler {
 
         check_ajax_referer('k_save_nonce', 'nonce');
 
-        $category_id = absint($_POST['category_id'] ?? 0);
+        $product_ids = isset($_POST['product_ids']) ? array_map('absint', $_POST['product_ids']) : [];
         $increase_percent = floatval($_POST['increase_percent'] ?? 25);
+
+        if (empty($product_ids)) {
+            wp_send_json_error(['message' => 'هیچ محصولی انتخاب نشده']);
+        }
 
         if ($increase_percent < 1 || $increase_percent > 500) {
             wp_send_json_error(['message' => 'درصد نامعتبر']);
         }
 
-        $args = [
-            'status' => 'publish',
-            'limit' => 500,
-        ];
-
-        if ($category_id > 0) {
-            $args['category'] = $category_id;
-        }
-
-        $products = wc_get_products($args);
         $updated_count = 0;
 
         // دریافت backup قیمت‌های قبلی
@@ -1179,24 +1134,51 @@ class KK_Ajax_Handler {
             $price_backup = [];
         }
 
-        foreach ($products as $product) {
-            $product_id = $product->get_id();
-            $regular_price = (float) $product->get_regular_price();
+        foreach ($product_ids as $product_id) {
+            $product = wc_get_product($product_id);
+            if (!$product) continue;
 
-            if ($regular_price > 0) {
-                // ذخیره قیمت قبلی اگر قبل‌تر ذخیره نشده باشد
-                if (!isset($price_backup[$product_id])) {
-                    $price_backup[$product_id] = [
-                        'original_price' => $regular_price,
-                        'last_update' => time(),
-                    ];
+            $type = $product->get_type();
+
+            if ($type === 'variable') {
+                // برای محصولات متغیر، تمام variants را بروزرسانی کنیم
+                $children = $product->get_children();
+                foreach ($children as $child_id) {
+                    $variation = wc_get_product($child_id);
+                    if (!$variation) continue;
+
+                    $regular_price = (float) $variation->get_regular_price();
+                    if ($regular_price > 0) {
+                        // ذخیره قیمت قبلی
+                        if (!isset($price_backup[$child_id])) {
+                            $price_backup[$child_id] = [
+                                'original_price' => $regular_price,
+                                'last_update' => time(),
+                            ];
+                        }
+
+                        $new_price = $regular_price * (1 + $increase_percent / 100);
+                        $variation->set_regular_price($new_price);
+                        $variation->save();
+                        $updated_count++;
+                    }
                 }
+            } else {
+                // برای محصولات ساده
+                $regular_price = (float) $product->get_regular_price();
+                if ($regular_price > 0) {
+                    if (!isset($price_backup[$product_id])) {
+                        $price_backup[$product_id] = [
+                            'original_price' => $regular_price,
+                            'last_update' => time(),
+                        ];
+                    }
 
-                // محاسبه قیمت جدید
-                $new_price = $regular_price * (1 + $increase_percent / 100);
-                $product->set_regular_price($new_price);
-                $product->save();
-                $updated_count++;
+                    $new_price = $regular_price * (1 + $increase_percent / 100);
+                    $product->set_regular_price($new_price);
+                    $product->save();
+                    $updated_count++;
+                }
             }
         }
 
@@ -1213,17 +1195,18 @@ class KK_Ajax_Handler {
             'timestamp' => time(),
             'action' => 'افزایش قیمت',
             'percent' => $increase_percent,
-            'product_count' => $updated_count,
-            'category_id' => $category_id,
+            'product_count' => count($product_ids),
         ];
 
         update_option('k_price_change_history', $history);
 
-        // Expire cache
-        KK_Cache::clear_products_cache();
+        // Clear cache if exists
+        if (function_exists('KK_Cache') && method_exists('KK_Cache', 'clear_products_cache')) {
+            KK_Cache::clear_products_cache();
+        }
 
         wp_send_json_success([
-            'message' => 'قیمت ' . $updated_count . ' محصول با موفقیت افزایش یافت.',
+            'message' => 'قیمت ' . $updated_count . ' قلم با موفقیت افزایش یافت.',
             'updated_count' => $updated_count,
         ]);
     }
@@ -1264,18 +1247,19 @@ class KK_Ajax_Handler {
             'timestamp' => time(),
             'action' => 'بازگشت به قیمت اصلی',
             'percent' => 0,
-            'product_count' => $reverted_count,
-            'category_id' => 0,
+            'product_count' => count($price_backup),
         ];
 
         update_option('k_price_change_history', $history);
         delete_option('k_price_backup_history');
 
-        // Expire cache
-        KK_Cache::clear_products_cache();
+        // Clear cache if exists
+        if (function_exists('KK_Cache') && method_exists('KK_Cache', 'clear_products_cache')) {
+            KK_Cache::clear_products_cache();
+        }
 
         wp_send_json_success([
-            'message' => 'قیمت ' . $reverted_count . ' محصول با موفقیت برگردانده شد.',
+            'message' => 'قیمت ' . $reverted_count . ' قلم با موفقیت برگردانده شد.',
             'reverted_count' => $reverted_count,
         ]);
     }

@@ -2102,17 +2102,11 @@ class KK_Admin_Tabs {
             <p style="color: #666; font-size: 14px; line-height: 1.6;">
                 با استفاده از این بخش می‌توانید قیمت تمام محصولات یا محصولات یک دسته‌بندی خاص را به صورت درصدی افزایش دهید.
                 <br />
-                <strong>نکات مهم:</strong>
-                <br />
-                ✓ قیمت‌های قبلی خودکار ذخیره می‌شوند و می‌توانید آنها را بازگردانید
-                <br />
-                ✓ ابتدا یک backup کامل بگیرید
-                <br />
-                ✓ عملیات روی قیمت اصلی محصول اعمال می‌شود
+                <strong>نکات مهم:</strong> قیمت‌های قبلی خودکار ذخیره می‌شوند و می‌توانید آنها را بازگردانید. عملیات روی قیمت اصلی محصول اعمال می‌شود.
             </p>
 
             <div class="k-price-increase-section" style="background: #f0f0f1; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
-                <h4 style="margin-top: 0;">📈 افزایش قیمت محصولات</h4>
+                <h4 style="margin-top: 0;">افزایش قیمت محصولات</h4>
                 <table class="form-table">
                     <tr>
                         <th scope="row">انتخاب دسته‌بندی</th>
@@ -2125,7 +2119,21 @@ class KK_Admin_Tabs {
                                     </option>
                                 <?php endforeach; ?>
                             </select>
-                            <p class="description">دسته‌بندی را انتخاب کنید یا برای تمام محصولات، "همه محصولات" را انتخاب نگاه دارید.</p>
+                            <p class="description">دسته‌بندی را انتخاب کنید.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">انتخاب محصولات</th>
+                        <td>
+                            <div id="k-price-products-list" style="max-height: 300px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; background: #f0f0f1; border-radius: 8px;">
+                                <p style="color: #666;">در حال بارگذاری محصولات...</p>
+                            </div>
+                            <div style="margin-top: 10px;">
+                                <label>
+                                    <input type="checkbox" id="k-price-select-all-products" />
+                                    افزایش قیمت همه محصولات نمایش‌داده‌شده
+                                </label>
+                            </div>
                         </td>
                     </tr>
                     <tr>
@@ -2135,30 +2143,24 @@ class KK_Admin_Tabs {
                             <p class="description">درصد افزایش قیمت (1 تا 500 درصد)</p>
                         </td>
                     </tr>
+                    <tr>
+                        <th scope="row"></th>
+                        <td>
+                            <div style="display: flex; gap: 10px;">
+                                <button type="button" class="button button-primary button-large" id="k-apply-price-increase">
+                                    اعمال افزایش قیمت
+                                </button>
+                                <button type="button" class="button button-secondary" id="k-revert-prices" style="background: #d63638; color: #fff; border-color: #d63638;">
+                                    بازگشت به قیمت‌های قبلی
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
                 </table>
-
-                <div id="k-preview-products-section" style="margin-top: 20px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <h5 style="margin: 0;">پیش‌نمایش محصولات</h5>
-                        <span id="k-products-count" style="color: #666; font-size: 14px;">در حال بارگذاری...</span>
-                    </div>
-                    <div id="k-preview-products-list" style="max-height: 400px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; background: #fff; border-radius: 8px;">
-                        <p style="color: #666; text-align: center;">در حال بارگذاری محصولات...</p>
-                    </div>
-                </div>
-
-                <div style="margin-top: 20px; display: flex; gap: 10px;">
-                    <button type="button" class="button button-primary button-large" id="k-apply-price-increase" style="background: #0073aa;">
-                        ✓ اعمال افزایش قیمت
-                    </button>
-                    <button type="button" class="button button-secondary" id="k-revert-prices" style="background: #d63638; color: #fff; border-color: #d63638;">
-                        ↶ بازگشت به قیمت‌های قبلی
-                    </button>
-                </div>
             </div>
 
             <div class="k-price-history" style="background: #fff; padding: 20px; border: 1px solid #c3c4c7; border-radius: 8px;">
-                <h4>📊 تاریخچه تغییرات</h4>
+                <h4>تاریخچه تغییرات</h4>
                 <div id="k-price-history-list">
                     <p style="color: #666; text-align: center; padding: 20px;">تغییری ثبت نشده است.</p>
                 </div>
@@ -2167,89 +2169,78 @@ class KK_Admin_Tabs {
 
         <script>
         jQuery(document).ready(function($) {
-            loadPricePreview(0);
+            loadProductsByCategory(0);
 
             $('#k-price-category-filter').on('change', function() {
                 const categoryId = $(this).val();
-                loadPricePreview(categoryId);
+                loadProductsByCategory(categoryId);
             });
 
-            $('#k-price-increase-percent').on('change', function() {
-                const categoryId = $('#k-price-category-filter').val();
-                loadPricePreview(categoryId);
-            });
+            function loadProductsByCategory(categoryId) {
+                const $productsList = $('#k-price-products-list');
 
-            function loadPricePreview(categoryId) {
-                const $productsList = $('#k-preview-products-list');
-                const increasePercent = $('#k-price-increase-percent').val() || 25;
-
-                $productsList.html('<p style="color: #666; text-align: center; padding: 20px;">در حال بارگذاری محصولات...</p>');
+                $productsList.html('<p style="color: #666;">در حال بارگذاری محصولات...</p>');
 
                 $.ajax({
                     url: ajaxurl,
                     type: 'POST',
                     data: {
-                        action: 'k_get_products_for_price_adjustment',
+                        action: 'k_get_products_by_category',
                         nonce: '<?php echo wp_create_nonce('k_save_nonce'); ?>',
-                        category_id: categoryId,
-                        increase_percent: increasePercent
+                        category_id: categoryId
                     },
                     success: function(response) {
                         if (response.success) {
                             let html = '';
-                            const products = response.data.products;
 
-                            $('#k-products-count').text(products.length + ' محصول');
-
-                            if (products.length === 0) {
-                                html = '<p style="color: #666; text-align: center; padding: 20px;">هیچ محصولی یافت نشد.</p>';
+                            if (response.data.products.length === 0) {
+                                html = '<p style="color: #666;">هیچ محصولی یافت نشد.</p>';
                             } else {
-                                html = '<table class="wp-list-table widefat fixed striped" style="font-size: 13px;">';
-                                html += '<thead><tr>';
-                                html += '<th style="width: 35%;">نام محصول</th>';
-                                html += '<th style="width: 15%; text-align: center;">قیمت فعلی</th>';
-                                html += '<th style="width: 15%; text-align: center;">قیمت جدید</th>';
-                                html += '<th style="width: 15%; text-align: center;">تفاوت</th>';
-                                html += '</tr></thead>';
-                                html += '<tbody>';
-
-                                products.forEach(function(product) {
-                                    const oldPrice = parseFloat(product.regular_price);
-                                    const newPrice = (oldPrice * (1 + increasePercent / 100)).toFixed(0);
-                                    const difference = (newPrice - oldPrice).toFixed(0);
-
-                                    html += '<tr>';
-                                    html += '<td><strong>' + product.name + '</strong></td>';
-                                    html += '<td style="text-align: center;">' + oldPrice.toLocaleString('fa-IR') + ' تومان</td>';
-                                    html += '<td style="text-align: center; color: #d63638; font-weight: 600;">' + newPrice.toLocaleString('fa-IR') + ' تومان</td>';
-                                    html += '<td style="text-align: center; color: #0073aa;">+' + difference.toLocaleString('fa-IR') + ' تومان</td>';
-                                    html += '</tr>';
+                                response.data.products.forEach(function(product) {
+                                    const productTypeInfo = product.type === 'variable' ? ' (متغیر)' : '';
+                                    html += `
+                                        <div style="padding: 8px; border-bottom: 1px solid #ddd;">
+                                            <label style="display: flex; align-items: center; cursor: pointer;">
+                                                <input type="checkbox" class="k-price-product-checkbox" value="${product.id}" style="margin-left: 8px;" />
+                                                <span>${product.name}${productTypeInfo} - ${product.regular_price}</span>
+                                            </label>
+                                        </div>
+                                    `;
                                 });
-
-                                html += '</tbody></table>';
                             }
 
                             $productsList.html(html);
-                        } else {
-                            $productsList.html('<p style="color: #d63638;">خطا در بارگذاری محصولات: ' + response.data.message + '</p>');
                         }
                     },
                     error: function() {
-                        $productsList.html('<p style="color: #d63638;">خطا در برقراری ارتباط.</p>');
+                        $productsList.html('<p style="color: #d63638;">خطا در بارگذاری محصولات.</p>');
                     }
                 });
             }
 
+            $('#k-price-select-all-products').on('change', function() {
+                $('.k-price-product-checkbox').prop('checked', $(this).is(':checked'));
+            });
+
             $('#k-apply-price-increase').on('click', function() {
-                const categoryId = $('#k-price-category-filter').val();
+                const selectedProducts = [];
+                $('.k-price-product-checkbox:checked').each(function() {
+                    selectedProducts.push($(this).val());
+                });
+
                 const increasePercent = $('#k-price-increase-percent').val();
+
+                if (selectedProducts.length === 0) {
+                    alert('لطفاً حداقل یک محصول انتخاب کنید.');
+                    return;
+                }
 
                 if (!increasePercent || increasePercent < 1 || increasePercent > 500) {
                     alert('لطفاً درصد معتبر (1 تا 500) وارد کنید.');
                     return;
                 }
 
-                if (!confirm('آیا از افزایش ' + increasePercent + '% قیمت‌ها اطمینان دارید؟\n\nقیمت‌های قبلی خودکار ذخیره می‌شوند.')) {
+                if (!confirm('آیا از افزایش ' + increasePercent + '% قیمت ' + selectedProducts.length + ' محصول اطمینان دارید؟')) {
                     return;
                 }
 
@@ -2262,13 +2253,14 @@ class KK_Admin_Tabs {
                     data: {
                         action: 'k_apply_price_increase',
                         nonce: '<?php echo wp_create_nonce('k_save_nonce'); ?>',
-                        category_id: categoryId,
+                        product_ids: selectedProducts,
                         increase_percent: increasePercent
                     },
                     success: function(response) {
                         if (response.success) {
                             alert(response.data.message);
-                            loadPricePreview(categoryId);
+                            const categoryId = $('#k-price-category-filter').val();
+                            loadProductsByCategory(categoryId);
                             loadPriceHistory();
                         } else {
                             alert('خطا: ' + (response.data.message || 'خطایی نامعلوم رخ داد'));
@@ -2278,13 +2270,13 @@ class KK_Admin_Tabs {
                         alert('خطا در برقراری ارتباط.');
                     },
                     complete: function() {
-                        $button.prop('disabled', false).text('✓ اعمال افزایش قیمت');
+                        $button.prop('disabled', false).text('اعمال افزایش قیمت');
                     }
                 });
             });
 
             $('#k-revert-prices').on('click', function() {
-                if (!confirm('آیا از بازگشت به قیمت‌های قبلی اطمینان دارید؟\n\nتمام تغییرات قیمت برگردانده می‌شوند.')) {
+                if (!confirm('آیا از بازگشت به قیمت‌های قبلی اطمینان دارید؟')) {
                     return;
                 }
 
@@ -2302,7 +2294,7 @@ class KK_Admin_Tabs {
                         if (response.success) {
                             alert(response.data.message);
                             const categoryId = $('#k-price-category-filter').val();
-                            loadPricePreview(categoryId);
+                            loadProductsByCategory(categoryId);
                             loadPriceHistory();
                         } else {
                             alert('خطا: ' + (response.data.message || 'خطایی نامعلوم رخ داد'));
@@ -2312,7 +2304,7 @@ class KK_Admin_Tabs {
                         alert('خطا در برقراری ارتباط.');
                     },
                     complete: function() {
-                        $button.prop('disabled', false).text('↶ بازگشت به قیمت‌های قبلی');
+                        $button.prop('disabled', false).text('بازگشت به قیمت‌های قبلی');
                     }
                 });
             });
@@ -2354,7 +2346,6 @@ class KK_Admin_Tabs {
                 });
             }
 
-            // بارگذاری تاریخچه در ابتدا
             loadPriceHistory();
         });
         </script>
