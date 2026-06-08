@@ -949,6 +949,9 @@ class KK_Admin {
                 <a href="?page=khoshtip-kocholo-control&tab=sales" class="nav-tab <?php echo $active_tab === 'sales' ? 'nav-tab-active' : ''; ?>">
                     حراج
                 </a>
+                <a href="?page=khoshtip-kocholo-control&tab=price_settings" class="nav-tab <?php echo $active_tab === 'price_settings' ? 'nav-tab-active' : ''; ?>">
+                    تنظیمات قیمت
+                </a>
                 <a href="?page=khoshtip-kocholo-control&tab=categories" class="nav-tab <?php echo $active_tab === 'categories' ? 'nav-tab-active' : ''; ?>">
                     دسته‌بندی‌ها
                 </a>
